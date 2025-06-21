@@ -4,16 +4,30 @@ from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait, StopWatch
 
-hub = PrimeHub()
+from betterClasses import BetterMotor, BetterDriveBase
 
-left = Motor(Port.B, Direction.COUNTERCLOCKWISE)
-right = Motor(Port.A)
-hand: Motor = Motor(Port.C)
+hub: PrimeHub = PrimeHub()
 
-db: DriveBase = DriveBase(left, right, 62.4, 129)
+left: Motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
+right: Motor = Motor(Port.A)
+hand: BetterMotor = BetterMotor(Port.C, 400)
 
-def main() -> None:
-    pass
+db: BetterDriveBase = BetterDriveBase(left, right, 62.4, 129)
+
+def test() -> None:
+    db.drive(100, 0) # S turn_rate
+    wait(1000)
+    db.brake()
+
+    db.drive(-100) # Bez turn_rate
+    wait(1000)
+    db.brake()
+
+    hand.run_target(hand.angle() - 10) # Bez speed (isto kao BetterMotor.run_angle(-10))
+    hand.run_target(hand.angle() - 10, 400) # Sa speed (isto kao BetterMotor.run_angle(-10, 400))
+
+    hand.run_angle(10) # Bez speed
+    hand.run_angle(10, 400) # Sa speed
 
 if __name__ == "__main__":
-    main()
+    test()
